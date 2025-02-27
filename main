@@ -1,0 +1,199 @@
+# Problem 1: Simple Class Definition
+# Define a class `Person` with attributes `name` and `age`.
+# Add a method `introduce` that prints a message introducing the person with their name and age.
+
+class Person:
+  def __init__(self, name, age):
+    self.name = name
+    self.age = age
+
+  def introduce(self):
+    return f"{self.name} is {self.age} years old"
+
+Taryn = Person("Taryn", 18)
+#print(Taryn.introduce())
+
+# Problem 2: Class with a Method
+# Define a class `Rectangle` with attributes `length` and `width`.
+# Add methods `area` and `perimeter` that return the area and perimeter of the rectangle.
+
+class Rectangle:
+  def __init__(self, length, width):
+    self.length = length
+    self.width = width
+
+  def area(self):
+    return self.length*self.width
+
+  def perimeter(self):
+    return 2*(self.length+self.width)
+
+rect = Rectangle(2,4)
+#print(rect.area())
+
+# Problem 3: Class Inheritance
+# Define a class `Square` that inherits from `Rectangle`.
+# Add an attribute `side_length` and override the `__init__` method to set both the length and width to the side length.
+
+class Square(Rectangle):
+  def __init__(self, side_length):
+    super().__init__(side_length, side_length)
+
+
+# Problem 4: Implementing __str__ Method
+# Define a class `Book` with attributes `title` and `author`.
+# Implement the `__str__` method to return a string representation of the book.
+
+class Book:
+  def __init__(self, title, author):
+    self.title = title
+    self.author = author
+  
+  def __str__(self):
+    return f"{self.title} by {self.author}"
+
+# when we call str(obj):
+# python checks if obj has an __str__()
+# if it does, it calls that method
+# and str(obj) returns the result of obj.__str__()
+
+
+book = Book("Homefire","Shamsie")
+#print(book)
+
+# Problem 5: Implementing __len__ Method
+# Define a class `Library` that contains a list of `Book` objects.
+# Create an `add_book` method that adds a book to the library.
+# Implement the `__len__` method to return the number of books in the library.
+
+class Library:
+  def __init__(self, catalog=None):
+    self.catalog = [] if catalog is None else catalog
+
+  def add_book(self, book):
+    self.catalog.append(book)
+
+  def __len__(self):
+    return len(self.catalog)   # self.catalog.__len__()
+
+  def __str__(self):
+    s = "Library:"
+    # catalog: [b1, b2, b3, ...]
+    # enum(catalog) -> [(0, b1), (1, b2), (2, b3), ...]
+    for i, book in enumerate(self.catalog):
+      s += "\n" + f"{i+1}) " + str(book) # str(book) -> book.__str__()
+    return s
+
+  def __getitem__(self, key):
+    return self.catalog[key]
+
+  def __setitem__(self, key, value):
+    self.catalog[key] = value
+
+
+my_lib = Library()
+my_lib.add_book(Book("Homefire", "Shamsie"))
+my_lib.add_book(Book("The Great Gatsby", "F. Scott Fitzgerald"))
+my_lib.add_book(Book("To Kill a Mockingbird", "Harper Lee"))
+#print(str(my_lib))
+
+
+# obj[key] = val, calls the magic method -> obj.__setitem__(key, val)
+# obj[key] -> calls the magic method -> obj.__getitem__(key)
+# obj1 == obj2 -> calls the magic method -> obj1.__eq__(obj2)
+# obj1 < obj2 -> calls the magic method -> obj1.__lt__(obj2)
+
+# Problem 6: Implementing __getitem__ and __setitem__ Methods
+# Extend the `Library` class to support indexing and item assignment for books.
+
+
+  
+# Problem 7: Implementing __eq__ Method
+# Define a class `Point` with attributes `x` and `y`.
+# Implement the `__eq__` method to compare two points for equality.
+
+class Point:
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+  
+  def __eq__(self, new):
+    return self.x == new.x and self.y == new.y
+
+# Python has two methods for checking equality:
+# 1. is
+# 2. ==
+#
+# 'is' checks if the two objects share the same memory location
+# == check if the two objects have the same value
+
+coordinate1 = Point(3,4)
+coordinate2 = Point(3,4)
+print(coordinate1 == coordinate2)
+print(coordinate1 is coordinate2)
+
+# Problem 8: (Implementing) __lt__ Method
+# Define a class `Student` with attributes `name` and `grade`.
+# Implement the `__lt__` method to compare students by their grade.
+# obj1 < obj2 -> calls the magic method -> obj1.__lt__(obj2)
+
+class Student:
+  def __init__(self, name, grade):
+    self.name = name
+    self.grade = grade
+
+  def __lt__(self, new):
+    return self.grade < new.grade
+
+# (s1 < s2)   <=>   s1.__lt__(s2)
+
+#student1 = Student()
+      
+# Problem 9: Implementing __add__ and __sub__ Methods
+# Define a class `Vector` with attributes `x` and `y`.
+# Implement the `__add__` and `__sub__` methods to add and subtract vectors.
+# Implement the `__str__` method to return a string representation of the vector.
+# Implement the `__mul__` method to multiply a vector by a scalar.
+# Implement the `__abs__` method to calculate the magnitude of the vector
+import math
+
+class Vector:
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+
+  def __add__(self, new):
+    result_vector = Vector(self.x + new.x, self.y + new.y)
+    return result_vector
+
+  def __sub__(self, new):
+    result_vector = Vector(self.x - new.x, self.y - new.y)
+    return result_vector
+
+  def __str__(self):
+    return f"({self.x}, {self.y})"
+
+  def __mul__(self, scalar):
+    result_vector = Vector(scalar*self.x, scalar*self.y)
+    return result_vector
+
+  def __abs__(self):
+    return math.sqrt(self.x**2 + self.y**2)
+
+
+# a, b = 12, -5
+# Python implicitly converts to a tuple:
+# 12, -5 -> (12, -5)
+# then, it just uses tuple destructuring
+# a, b = (12, -5)
+
+
+
+
+v1 = Vector(2,4)
+v2 = Vector(3, -1)
+print(v1.__abs__())
+print(abs(v1))
+print(v1 + v2)
+print(v1 - v2)
+print(v1 * 5)
